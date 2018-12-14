@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-
+@Disabled
 @TeleOp
 public class testOpMode extends OpMode {
 
@@ -28,10 +29,10 @@ public class testOpMode extends OpMode {
     @Override
     public void loop() {
 
-        FrontLeft.setPower(-1 * (gamepad1.left_stick_y));
-        BackLeft.setPower(-1 * (gamepad1.left_stick_y));
-        FrontRight.setPower(gamepad1.right_stick_y);
-        BackRight.setPower(-1 * (gamepad1.right_stick_y));
+        FrontLeft.setPower(.5 * (gamepad1.left_stick_y));
+        BackLeft.setPower(-.5 * (gamepad1.left_stick_y));
+        FrontRight.setPower(-.5 * (gamepad1.right_stick_y));
+        BackRight.setPower(-.5 * (gamepad1.right_stick_y));
 
         telemetry.addData("Left 1", FrontLeft.getPower());
         telemetry.addData("Left 2", BackLeft.getPower());
@@ -39,6 +40,5 @@ public class testOpMode extends OpMode {
         telemetry.addData("Right 2", BackRight.getPower());
         telemetry.addData("Status", "Running");
         telemetry.update();
-
     }
 }
