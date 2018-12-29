@@ -12,17 +12,19 @@ public class encoderTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        hardwareMap.dcMotor.get("Left");
+        leftMotor = hardwareMap.dcMotor.get("Left");
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         waitForStart();
-
-        leftMotor.setTargetPosition(-280);
+        telemetry.addData("Encoder Ticks", leftMotor.getCurrentPosition());
+        leftMotor.setTargetPosition(-2800);
         leftMotor.setPower(-.5);
 
-        telemetry.addData("Encoder Ticks", leftMotor.getCurrentPosition());
-        telemetry.update();
+
+
+
+
 
     }
 }

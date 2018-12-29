@@ -1,20 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous
-public class testAutoMode extends LinearOpMode {
-
-//test autonomous, get ready for a shitshow down here
+public class AutoMode extends LinearOpMode {
 
     DcMotor rightMotor;
     DcMotor leftMotor;
     DcMotor lift;
+    Servo claw;
+    Servo idol;
+
 
     public void moveForward(double power, long time) throws InterruptedException {
         rightMotor.setPower(power);
@@ -34,15 +33,12 @@ public class testAutoMode extends LinearOpMode {
         Thread.sleep(time);
     }
 
-        public void lift(double power, long time) throws InterruptedException {
-//        while (!touch.isPressed()) {
-            lift.setPower(.5);
-//        }
- //       lift.setPower(0);
+    public void lift(double power, long time) throws InterruptedException {
+        lift.setPower(-power);
     }
-    public void stopMoving() {
-        rightMotor.setPower(0);
-        leftMotor.setPower(0);
+
+    public void claw(double position, long time) throws InterruptedException {
+        claw.setPosition(position);
     }
 
     @Override
@@ -51,14 +47,17 @@ public class testAutoMode extends LinearOpMode {
         rightMotor = hardwareMap.dcMotor.get("Right");
         leftMotor = hardwareMap.dcMotor.get("Left");
         lift = hardwareMap.dcMotor.get("Lift");
-        //      touch = hardwareMap.touchSensor.get("Touch");
+        claw = hardwareMap.servo.get("Claw");
+        idol = hardwareMap.servo.get("Idol");
+        claw.setPosition(0);
+        idol.setPosition(.75);
 
-        moveForward(.5, 500);
-        turnRight(.5, 500);
-        moveForward(.5, 500);
-        turnLeft(.25, 500);
-        lift(.1, 500);
+        waitForStart();
 
+        claw(0, 100);
+        lift(-.5, 2000);
+        claw(1, 2000);
+        moveForward(.75, 1000);
 
     }
 }

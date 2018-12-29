@@ -15,38 +15,39 @@ public class TeleOpMode extends OpMode {
     DcMotor rightMotor;
     DcMotor leftMotor;
     DcMotor lift;
-    DcMotor claw;
-    DcMotor clawPivot;
-    Servo servo;
-    CRServo contServo;
+    Servo claw;
+    Servo idol;
+
 
     @Override
     public void init() {
         rightMotor = hardwareMap.dcMotor.get("Right");
         leftMotor = hardwareMap.dcMotor.get("Left");
         lift = hardwareMap.dcMotor.get("Lift");
-        claw = hardwareMap.dcMotor.get("Claw");
-        clawPivot = hardwareMap.dcMotor.get("Claw2");
-        servo = hardwareMap.servo.get("Servo");
-        contServo = hardwareMap.crservo.get("Cont");
-        servo.setPosition(1);
-        contServo.setPower(0);
+        claw = hardwareMap.servo.get("Claw");
+        idol = hardwareMap.servo.get("Idol");
+        claw.setPosition(0);
+        idol.setPosition(.75);
     }
 
     @Override
     public void loop() {
 
         rightMotor.setPower(gamepad1.right_stick_y);
+
         leftMotor.setPower(-1 * (gamepad1.left_stick_y));
-        lift.setPower(gamepad2.left_stick_y);
-        if (gamepad1.a) {
-            servo.setPosition(.5);
+
+        lift.setPower(-1*(gamepad2.left_stick_y));
+
+        if (gamepad2.a) {
+            claw.setPosition(1);
         } else {
-            servo.setPosition(1);
+            claw.setPosition(0);
         }
-        claw.setPower(gamepad2.right_stick_y);
-        if (gamepad2.left_bumper) {
-            contServo.setPower(gamepad2.left_stick_y);
+        if (gamepad1.a) {
+            idol.setPosition(1);
+        } else {
+            idol.setPosition(.75);
         }
     }
 }
