@@ -15,7 +15,7 @@ public class CompAutoMode extends LinearOpMode {
     private static double wheelGearReduction = 1.0; //gears are in a 1:1 ratio, so no change
     private static double wheelEncoderTicksPerInch = ((encoderTicksPerRevolution * wheelGearReduction) / (wheelDiameter * 3.1415)); //basic circumference equation to find how many encoder ticks are in one inch travelled.
     private static double liftGearDiameter = 1;
-    private static double liftGearReduction = .5;
+    private static double liftGearReduction = 2;
     private static double liftEncoderTicksPerInch = ((encoderTicksPerRevolution * liftGearReduction) / (liftGearDiameter * 3.1415));
 
     DcMotor rightMotor;
@@ -55,7 +55,7 @@ public class CompAutoMode extends LinearOpMode {
             lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             lift.setPower(power); //do not set this above .5, the lift is sensitive
             liftClaw.setPosition(1);
-            if (inches >= 7.8) { //maximum height before lift grinds
+            if (inches >= 4) { //maximum height before lift grinds
                 lift.setPower(0);
             }
         }
@@ -90,7 +90,6 @@ public class CompAutoMode extends LinearOpMode {
         liftClaw = hardwareMap.servo.get("Claw");
         idol = hardwareMap.servo.get("Idol");
         leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        liftClaw.setPosition(0);
         idol.setPosition(.75);
 
         //start encoders
@@ -103,31 +102,47 @@ public class CompAutoMode extends LinearOpMode {
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("Status", "Encoders Ready");
+        telemetry.update();
         liftClaw.setPosition(0);
+
         waitForStart();
 
         resetState();
 
         //start of autonomous
-        switch (state) {
-            case readyRobot:
-                sleep(2000);
-                changeState(Step.moveOffLander);
-                break;
-            case moveOffLander:
-                lowerLift(.25, 6);
-                changeState(Step.moveForward);
-                break;
-            case moveForward:
-                moveForward(.5, 6);
-                changeState(Step.stopRobot);
-                break;
-            case stopRobot:
-                stopRobot();
-                break;
+        while(opModeIsActive()) {
+            switch (state) {
+                case readyRobot:
+                    sleep(2000);
+                    changeState(Step.moveOffLander);
+                    telemetry.addData("Done", "First State");
+                    telemetry.update();
+                    sleep(3000);
+                    break;
+                case moveOffLander:
+                    telemetry.addData("Starting", "Second State");
+                    telemetry.update();
+                    sleep(3000);
+                    lowerLift(.5, 3);
+                    changeState(Step.moveForward);
+                    telemetry.addData("Done", "Second State");
+                    telemetry.update();
+                    sleep(3000);
+                    break;
+                case moveForward:
+                    moveForward(.5, 4);
+                    changeState(Step.stopRobot);
+                    break;
+                case stopRobot:
+                    stopRobot();
+                    break;
+                default:
+                    telemetry.addData("Error", "Something Broke");
+                    break;
+            }
+            telemetry.addData("Step:", getState(state));
+            telemetry.update();
         }
 
-        telemetry.addData("Step:", getState(state));
-        telemetry.update();
     }
 }
