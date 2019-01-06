@@ -27,7 +27,7 @@ public class TeleOpMode extends OpMode {
         claw = hardwareMap.servo.get("Claw");
         idol = hardwareMap.servo.get("Idol");
         claw.setPosition(0);
-        idol.setPosition(.75);
+        idol.setPosition(-.25);
     }
 
     @Override
@@ -45,9 +45,9 @@ public class TeleOpMode extends OpMode {
             claw.setPosition(0);
         }
         if (gamepad1.a) {
-            idol.setPosition(1);
+            idol.setPosition(0);
         } else {
-            idol.setPosition(.75);
+            idol.setPosition(-.25);
         }
     }
 }
